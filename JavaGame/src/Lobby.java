@@ -7,10 +7,10 @@ import javax.swing.*;
 // คลาสหลักของโปรแกรมชื่อ Lobby สืบทอดคุณสมบัติมาจาก JFrame (หน้าต่างโปรแกรม)
 public class Lobby extends JFrame {
 
-    private CardLayout cardLayout; // ตัวจัดการการสลับหน้าจอ (JPanel)
-    private JPanel mainPanel; // Panel หลักที่จะบรรจุ Panel ย่อยอื่นๆ (ที่เปรียบเหมือนการ์ด)
-    private Game gamePanel;  // Panel ของตัวเกม (สมมติว่ามีคลาส Game ที่ไม่ได้แสดงในไฟล์นี้)
-    private JPanel lobbyPanel;  // Panel สำหรับหน้าล็อบบี้ (หน้าเลือก Level)
+    private CardLayout cardLayout; // ตัวจัดการการสลับหน้าจอ 
+    private JPanel mainPanel; // Panel หลักที่จะบรรจุ Panel ย่อยอื่นๆ 
+    private Game gamePanel;  // Panel ของตัวเกม 
+    private JPanel lobbyPanel;  // Panel สำหรับหน้าล็อบบี้หน้าเลือก Level
     private JPanel gameOverPanel; // Panel สำหรับหน้า Game Over
     private JPanel startPanel;    // Panel สำหรับหน้า Start เริ่มต้น
     private Image lobbyBackgroundImage; // รูปภาพพื้นหลังสำหรับหน้า Start และ Lobby
@@ -27,7 +27,7 @@ public class Lobby extends JFrame {
         // โหลดรูปภาพพื้นหลัง "gameover.png" จาก resource ของโปรแกรม
         gameOverBackgroundImage = new ImageIcon(getClass().getResource("gameover.png")).getImage();
 
-        // สร้าง startPanel (หน้าแรก) โดยใช้ anonymous inner class
+        // สร้าง startPanel (หน้าแรก) 
         startPanel = new JPanel() {
             @Override
             // เพื่อ override เมธอด paintComponent (เมธอดที่ใช้วาด component)
