@@ -572,7 +572,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     // เมธอดสำหรับรีเซ็ตค่าทั้งหมดเพื่อเริ่มเล่นด่านเดิมใหม่
     public void restartGame() {
         // Reset ค่าเริ่มต้นของศัตรู, แพลตฟอร์ม, และหัวใจตามระดับความยาก
-        setDifficulty(difficultyLevel); // (สำคัญที่สุด: ใช้เมธอด setDifficulty เพื่อสร้างด่านใหม่)
+        setDifficulty(difficultyLevel);
 
         // รีเซ็ตตำแหน่งและสถานะผู้เล่น
         characterX = 100;

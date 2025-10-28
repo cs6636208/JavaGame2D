@@ -43,7 +43,7 @@ public class Lobby extends JFrame {
         JButton startGameButton = new JButton("Start Game");
         // จัดปุ่มให้อยู่กึ่งกลางในแนวนอน (สำหรับ BoxLayout)
         startGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // เพิ่ม ActionListener (ตัวดักฟังเหตุการณ์) เมื่อปุ่มถูกกด
+        // ActionListener (ตัวดักฟังเหตุการณ์) เมื่อปุ่มถูกกด
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,7 +71,7 @@ public class Lobby extends JFrame {
         // สร้างปุ่ม "Level 1"
         JButton Level1Button = new JButton("Level 1");
         Level1Button.setAlignmentX(Component.CENTER_ALIGNMENT); // จัดปุ่มกึ่งกลางแนวนอน
-        // เพิ่มตัวดักฟังเหตุการณ์เมื่อปุ่ม Level 1 ถูกกด
+        // ตัวดักฟังเหตุการณ์เมื่อปุ่ม Level 1 ถูกกด
         Level1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,9 +176,9 @@ public class Lobby extends JFrame {
         gameOverScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // เพิ่มส่วนประกอบต่างๆ ลงใน gameOverPanel
-        gameOverPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านบน
+        gameOverPanel.add(Box.createVerticalGlue());
         gameOverPanel.add(Box.createRigidArea(new Dimension(0, 100)));
-        gameOverPanel.add(gameOverScoreLabel); // เพิ่ม Label แสดงคะแนน
+        gameOverPanel.add(gameOverScoreLabel);
         gameOverPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         gameOverPanel.add(yesButton); // เพิ่มปุ่ม "Yes"
         gameOverPanel.add(Box.createRigidArea(new Dimension(0, 10)));
