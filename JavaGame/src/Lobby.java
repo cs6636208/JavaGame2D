@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-// คลาสหลักของโปรแกรมชื่อ Lobby สืบทอดคุณสมบัติมาจาก JFrame (หน้าต่างโปรแกรม)
+// คลาสหลักของโปรแกรมชื่อ Lobby สืบทอดคุณสมบัติมาจาก JFrame 
 public class Lobby extends JFrame {
 
     private CardLayout cardLayout; // ตัวจัดการการสลับหน้าจอ 
@@ -48,17 +48,17 @@ public class Lobby extends JFrame {
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // เมื่อถูกกด ให้สลับไปแสดง "Lobby" (หน้าเลือก Level)
+                // เมื่อถูกกด ให้สลับไปแสดง "Lobby" (หน้า Level)
                 cardLayout.show(mainPanel, "Lobby");
             }
         });
 
-        // จัดปุ่ม Start Game ให้อยู่กลางจอ (โดยใช้ "กาว" ยืดหยุ่น)
+        // จัดปุ่ม Start Game ให้อยู่กลางจอ 
         startPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นได้ (Glue) ด้านบนปุ่ม
         startPanel.add(startGameButton); // เพิ่มปุ่ม "Start Game" ลงใน startPanel
         startPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นได้ (Glue) ด้านล่างปุ่ม
 
-        // --- สร้างหน้า lobby (หน้าเลือก Level) ---
+        // --- สร้างหน้า lobby (หน้า Level) ---
         // สร้าง lobbyPanel และตั้งค่าการวาดพื้นหลังเหมือน startPanel
         lobbyPanel = new JPanel() {
             @Override
@@ -70,7 +70,6 @@ public class Lobby extends JFrame {
         // ตั้งค่า Layout Manager ของ lobbyPanel ให้เป็น BoxLayout (จัดเรียงแนวตั้ง)
         lobbyPanel.setLayout(new BoxLayout(lobbyPanel, BoxLayout.Y_AXIS));
 
-        // ... (โค้ดสร้างปุ่ม Level 1-5) ...
         // สร้างปุ่ม "Level 1"
         JButton Level1Button = new JButton("Level 1");
         Level1Button.setAlignmentX(Component.CENTER_ALIGNMENT); // จัดปุ่มกึ่งกลางแนวนอน
@@ -125,7 +124,7 @@ public class Lobby extends JFrame {
         // เพิ่มปุ่มและช่องว่างไปที่ lobby (หน้าเลือก Level)
         lobbyPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านบนสุด
         lobbyPanel.add(Box.createRigidArea(new Dimension(0, 100))); // เพิ่มช่องว่างคงที่ขนาด 100 pixel ในแนวตั้ง
-        lobbyPanel.add(Level1Button); // เพิ่มปุ่ม Level 1
+        lobbyPanel.add(Level1Button);
         lobbyPanel.add(Box.createRigidArea(new Dimension(0, 10))); // เพิ่มช่องว่างคงที่ 10 pixel (เว้นระยะระหว่างปุ่ม)
         lobbyPanel.add(Level2Button);
         lobbyPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -137,7 +136,7 @@ public class Lobby extends JFrame {
         lobbyPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านล่างสุด
 
         // สร้าง object ของคลาส Game (ตัวเกมจริง)
-        gamePanel = new Game(); // (สมมติว่าคลาส Game kế thừaมาจาก JPanel)
+        gamePanel = new Game();
         // สร้าง gameOverPanel และตั้งค่าการวาดพื้นหลัง "gameover.png"
         gameOverPanel = new JPanel() {
             @Override
@@ -182,7 +181,7 @@ public class Lobby extends JFrame {
 
         // เพิ่มส่วนประกอบต่างๆ ลงใน gameOverPanel
         gameOverPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านบน
-        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 300))); // เพิ่มช่องว่างคงที่ 300 pixel (เพื่อดัน UI ลงมาด้านล่าง)
+        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 100))); // เพิ่มช่องว่างคงที่ 100 pixel
         gameOverPanel.add(gameOverScoreLabel); // เพิ่ม Label แสดงคะแนน
         gameOverPanel.add(Box.createRigidArea(new Dimension(0, 10))); // เพิ่มช่องว่าง 10 pixel
         gameOverPanel.add(yesButton); // เพิ่มปุ่ม "Yes"

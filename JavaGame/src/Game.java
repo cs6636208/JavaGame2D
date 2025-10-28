@@ -36,7 +36,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private Image backgroundImage;
     private Image heartImage;
     // Lists สำหรับเก็บศัตรู
-    private ArrayList<Enemy> enemiesList; // ศัตรูปกติ (นิ่ง/เคลื่อนที่ AI)
+    private ArrayList<Enemy> enemiesList; // ศัตรูปกติ (นิ่ง/เคลื่อนที่)
     private ArrayList<Rectangle> specialEnemiesList; // ศัตรูพิเศษ (แมวตก)
     // Arrays สำหรับเก็บองค์ประกอบด่าน
     private Rectangle[] platforms; // แพลตฟอร์ม
@@ -104,7 +104,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         enemiesList = new ArrayList<>(); // เคลียร์ List เก่า
         // เพิ่มศัตรู (แมว)
         enemiesList.add(new Enemy(300, 290, 80, 75, false, 0)); // ตัวที่ 1: หยุดนิ่ง
-        enemiesList.add(new Enemy(200, 190, 80, 75, true, 1));  // ตัวที่ 2: เคลื่อนที่ (AI)
+        enemiesList.add(new Enemy(200, 190, 80, 75, true, 1));  // ตัวที่ 2: เคลื่อนที่ 
         enemiesList.add(new Enemy(450, 425, 80, 75, false, 0)); // ตัวที่ 3: หยุดนิ่ง
 
         // สร้างตำแหน่งดั้งเดิมของ Cheese
@@ -368,7 +368,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                     respawnAllCollectibles(); // Cheese กลับที่เดิม
 
                     if (score < 0) {
-                        score = 0; // (โค้ดเก่า กันคะแนนติดลบ - แต่ปัจจุบันไม่ได้หักคะแนน)
+                        score = 0; // (กันคะแนนติดลบ - แต่ปัจจุบันไม่ได้หักคะแนน)
                     }
                     if (lives <= 0) { // ถ้าชีวิตหมด
                         gameOver = true;
