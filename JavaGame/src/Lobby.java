@@ -7,15 +7,15 @@ import javax.swing.*;
 // คลาสหลักของโปรแกรมชื่อ Lobby สืบทอดคุณสมบัติมาจาก JFrame 
 public class Lobby extends JFrame {
 
-    private CardLayout cardLayout; // ตัวจัดการการสลับหน้าจอ 
-    private JPanel mainPanel; // Panel หลักที่จะบรรจุ Panel ย่อยอื่นๆ 
-    private Game gamePanel;  // Panel ของตัวเกม 
-    private JPanel lobbyPanel;  // Panel สำหรับหน้าล็อบบี้หน้าเลือก Level
-    private JPanel gameOverPanel; // Panel สำหรับหน้า Game Over
-    private JPanel startPanel;    // Panel สำหรับหน้า Start เริ่มต้น
-    private Image lobbyBackgroundImage; // รูปภาพพื้นหลังสำหรับหน้า Start และ Lobby
-    private Image gameOverBackgroundImage; // รูปภาพพื้นหลังสำหรับหน้า Game Over
-    private JLabel gameOverScoreLabel; // Label (ป้ายข้อความ) สำหรับแสดงคะแนนในหน้า Game Over
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+    private Game gamePanel;
+    private JPanel lobbyPanel;
+    private JPanel gameOverPanel;
+    private JPanel startPanel;
+    private Image lobbyBackgroundImage;
+    private Image gameOverBackgroundImage;
+    private JLabel gameOverScoreLabel;
 
     public Lobby() {
         // สร้าง object CardLayout เพื่อใช้จัดการสลับหน้า
@@ -32,8 +32,7 @@ public class Lobby extends JFrame {
             @Override
             // เพื่อ override เมธอด paintComponent (เมธอดที่ใช้วาด component)
             protected void paintComponent(Graphics g) {
-                super.paintComponent(g); // เรียกเมธอดวาดของคลาสแม่ (JPanel)
-                // วาดรูป lobbyBackgroundImage ให้เต็มขนาดของ Panel
+                super.paintComponent(g);
                 g.drawImage(lobbyBackgroundImage, 0, 0, getWidth(), getHeight(), null);
             }
         };
@@ -54,11 +53,10 @@ public class Lobby extends JFrame {
         });
 
         // จัดปุ่ม Start Game ให้อยู่กลางจอ 
-        startPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นได้ (Glue) ด้านบนปุ่ม
-        startPanel.add(startGameButton); // เพิ่มปุ่ม "Start Game" ลงใน startPanel
-        startPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นได้ (Glue) ด้านล่างปุ่ม
+        startPanel.add(Box.createVerticalGlue());
+        startPanel.add(startGameButton);
+        startPanel.add(Box.createVerticalGlue());
 
-        // --- สร้างหน้า lobby (หน้า Level) ---
         // สร้าง lobbyPanel และตั้งค่าการวาดพื้นหลังเหมือน startPanel
         lobbyPanel = new JPanel() {
             @Override
@@ -123,9 +121,9 @@ public class Lobby extends JFrame {
 
         // เพิ่มปุ่มและช่องว่างไปที่ lobby (หน้าเลือก Level)
         lobbyPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านบนสุด
-        lobbyPanel.add(Box.createRigidArea(new Dimension(0, 100))); // เพิ่มช่องว่างคงที่ขนาด 100 pixel ในแนวตั้ง
+        lobbyPanel.add(Box.createRigidArea(new Dimension(0, 100)));
         lobbyPanel.add(Level1Button);
-        lobbyPanel.add(Box.createRigidArea(new Dimension(0, 10))); // เพิ่มช่องว่างคงที่ 10 pixel (เว้นระยะระหว่างปุ่ม)
+        lobbyPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         lobbyPanel.add(Level2Button);
         lobbyPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         lobbyPanel.add(Level3Button);
@@ -133,7 +131,7 @@ public class Lobby extends JFrame {
         lobbyPanel.add(Level4Button);
         lobbyPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         lobbyPanel.add(Level5Button);
-        lobbyPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านล่างสุด
+        lobbyPanel.add(Box.createVerticalGlue());
 
         // สร้าง object ของคลาส Game (ตัวเกมจริง)
         gamePanel = new Game();
@@ -150,16 +148,15 @@ public class Lobby extends JFrame {
 
         // สร้างปุ่ม "Yes (Play Again)"
         JButton yesButton = new JButton("Yes (Play Again)");
-        yesButton.setAlignmentX(Component.CENTER_ALIGNMENT); // จัดปุ่มกึ่งกลางแนวนอน
+        yesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         // สร้างปุ่ม "No (Back to Lobby)"
         JButton noButton = new JButton("No (Back to Lobby)");
-        noButton.setAlignmentX(Component.CENTER_ALIGNMENT); // จัดปุ่มกึ่งกลางแนวนอน
+        noButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // เพิ่มตัวดักฟังเหตุการณ์เมื่อปุ่ม "Yes" ถูกกด
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // เมื่อกด "Yes" ให้เริ่มเกมใหม่ โดยใช้ level ความยากเดิม (ที่เก็บใน gamePanel.difficultyLevel)
                 startGame(gamePanel.difficultyLevel);
             }
         });
@@ -168,47 +165,46 @@ public class Lobby extends JFrame {
         noButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // เมื่อกด "No" ให้เรียกเมธอด showLobby() (ซึ่งจะกลับไปหน้า Start)
                 showLobby();
             }
         });
 
         // สร้าง Label สำหรับแสดงคะแนน เริ่มต้นด้วย "Score: 0"
         gameOverScoreLabel = new JLabel("Score: 0");
-        gameOverScoreLabel.setFont(new Font("Arial", Font.BOLD, 40)); // ตั้งค่า font เป็น Arial, ตัวหนา, ขนาด 40
-        gameOverScoreLabel.setForeground(Color.WHITE); // ตั้งค่าสีตัวอักษรเป็นสีขาว
-        gameOverScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // จัด Label ให้อยู่กึ่งกลางแนวนอน
+        gameOverScoreLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        gameOverScoreLabel.setForeground(Color.WHITE);
+        gameOverScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // เพิ่มส่วนประกอบต่างๆ ลงใน gameOverPanel
         gameOverPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านบน
-        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 100))); // เพิ่มช่องว่างคงที่ 100 pixel
+        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 100)));
         gameOverPanel.add(gameOverScoreLabel); // เพิ่ม Label แสดงคะแนน
-        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 10))); // เพิ่มช่องว่าง 10 pixel
+        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         gameOverPanel.add(yesButton); // เพิ่มปุ่ม "Yes"
-        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 10))); // เพิ่มช่องว่าง 10 pixel
+        gameOverPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         gameOverPanel.add(noButton); // เพิ่มปุ่ม "No"
-        gameOverPanel.add(Box.createVerticalGlue()); // เพิ่มช่องว่างยืดหยุ่นด้านล่าง
+        gameOverPanel.add(Box.createVerticalGlue());
 
-        mainPanel.add(startPanel, "Start"); // เพิ่ม startPanel โดยตั้งชื่อว่า "Start"
-        mainPanel.add(lobbyPanel, "Lobby"); // เพิ่ม lobbyPanel โดยตั้งชื่อว่า "Lobby"
-        mainPanel.add(gamePanel, "Game"); // เพิ่ม gamePanel โดยตั้งชื่อว่า "Game"
-        mainPanel.add(gameOverPanel, "GameOver"); // เพิ่ม gameOverPanel โดยตั้งชื่อว่า "GameOver"
+        mainPanel.add(startPanel, "Start");
+        mainPanel.add(lobbyPanel, "Lobby");
+        mainPanel.add(gamePanel, "Game");
+        mainPanel.add(gameOverPanel, "GameOver");
 
-        add(mainPanel); // เพิ่ม mainPanel (ที่บรรจุทุกหน้า) ลงใน JFrame
-        cardLayout.show(mainPanel, "Start"); // สั่งให้ CardLayout แสดงหน้า "Start" เป็นหน้าแรก
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ตั้งค่าให้โปรแกรมปิดการทำงานเมื่อกดปุ่ม X
-        setSize(800, 600); // ตั้งค่าขนาดหน้าต่างเป็น 800x600 pixel
-        setLocationRelativeTo(null); // ตั้งค่าให้หน้าต่างแสดงผลกลางจอ
-        setVisible(true); // ทำให้หน้าต่างแสดงผลขึ้นมา
+        add(mainPanel);
+        cardLayout.show(mainPanel, "Start");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     // เมธอดสำหรับเริ่มเกม (หรือเริ่มใหม่) ตาม level ที่เลือก
     private void startGame(int difficulty) {
-        gamePanel.difficultyLevel = difficulty; // เก็บค่า difficulty ที่เลือกไว้ในตัวแปรของ gamePanel
-        gamePanel.setDifficulty(difficulty); // เรียกเมธอด setDifficulty ใน gamePanel (เพื่อตั้งค่าเกมตาม level)
-        gamePanel.restartGame(); // เรียกเมธอด restartGame ใน gamePanel (เพื่อเริ่มเกมใหม่/รีเซ็ตค่า)
-        cardLayout.show(mainPanel, "Game"); // สลับหน้าจอไปที่ "Game"
-        gamePanel.requestFocusInWindow(); // สั่งให้ gamePanel ได้รับ focus (เพื่อให้รับ input จาก keyboard ได้ทันที)
+        gamePanel.difficultyLevel = difficulty;
+        gamePanel.setDifficulty(difficulty);
+        gamePanel.restartGame();
+        cardLayout.show(mainPanel, "Game");
+        gamePanel.requestFocusInWindow();
     }
 
     // เมธอดสำหรับกลับไปหน้าจอเริ่มต้น
@@ -218,9 +214,9 @@ public class Lobby extends JFrame {
 
     // เมธอดสำหรับแสดงหน้า Game Over (คาดว่าจะถูกเรียกจาก gamePanel เมื่อเกมจบ)
     public void showGameOver() {
-        int finalScore = gamePanel.getScore(); // ดึงคะแนนสุดท้ายจาก gamePanel
-        gameOverScoreLabel.setText("Score: " + finalScore); // อัปเดตข้อความใน gameOverScoreLabel ให้แสดงคะแนนที่ได้
-        cardLayout.show(mainPanel, "GameOver"); // สลับหน้าจอไปที่ "GameOver"
+        int finalScore = gamePanel.getScore();
+        gameOverScoreLabel.setText("Score: " + finalScore);
+        cardLayout.show(mainPanel, "GameOver");
     }
 
     // เมธอด main จุดเริ่มต้นของการรันโปรแกรม

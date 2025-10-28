@@ -7,27 +7,23 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
-// คลาส Game เป็น Panel ที่ใช้แสดงผลเกมทั้งหมด
-// implement ActionListener เพื่อรับเหตุการณ์จาก Timer (Game Loop)
-// implement KeyListener เพื่อรับการกดปุ่มจากคีย์บอร์ด
 public class Game extends JPanel implements ActionListener, KeyListener {
 
-    // --- ตัวแปรสมาชิก (Member Variables) ---
-    private Timer timer; // Timer สำหรับสร้าง Game Loop (อัปเดตเกมทุกๆ 20ms)
-    public int difficultyLevel; // เก็บระดับความยากที่เลือก (1-5)
-    private int characterX = 100; // ตำแหน่งแกน X ของตัวละคร
-    private int characterY = 400; // ตำแหน่งแกน Y ของตัวละคร
-    private int velocityY = 0; // ความเร็วในแนวดิ่ง (สำหรับการกระโดดและแรงโน้มถ่วง)
-    private int velocityX = 0; // ความเร็วในแนวนอน (สำหรับการเดินซ้าย-ขวา)
-    private final int gravity = 1; // แรงโน้มถ่วง (ดึงตัวละครลง)
-    private boolean isJumping = false; // สถานะว่าตัวละครกำลังกระโดดหรือไม่
-    private boolean isOnPlatform = false; // สถานะว่าตัวละครอยู่บนแพลตฟอร์ม (หรือพื้น) หรือไม่
-    private int lives = 0; // จำนวนชีวิต
-    private boolean gameOver = false; // สถานะว่าเกมจบแล้ว (แพ้) หรือไม่
-    private boolean hasWon = false; // สถานะว่าชนะเกมแล้วหรือไม่
-    private boolean isAKeyPressed = false; // ตรวจสอบว่าปุ่ม A (ซ้าย) ถูกกดค้างไว้หรือไม่
-    private boolean isDKeyPressed = false; // ตรวจสอบว่าปุ่ม D (ขวา) ถูกกดค้างไว้หรือไม่
-    // รูปภาพต่างๆ ที่ใช้ในเกม
+    private Timer timer; // Timer (อัปเดตเกมทุกๆ 20ms)
+    public int difficultyLevel;
+    private int characterX = 100;
+    private int characterY = 400;
+    private int velocityY = 0;
+    private int velocityX = 0;
+    private final int gravity = 1;
+    private boolean isJumping = false;
+    private boolean isOnPlatform = false;
+    private int lives = 0;
+    private boolean gameOver = false;
+    private boolean hasWon = false;
+    private boolean isAKeyPressed = false;
+    private boolean isDKeyPressed = false;
+
     private Image characterImage;
     private Image enemyImage;
     private Image specialEnemyImage;
@@ -35,43 +31,40 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     private Image finishLineImage;
     private Image backgroundImage;
     private Image heartImage;
-    // Lists สำหรับเก็บศัตรู
+
     private ArrayList<Enemy> enemiesList; // ศัตรูปกติ (นิ่ง/เคลื่อนที่)
     private ArrayList<Rectangle> specialEnemiesList; // ศัตรูพิเศษ (แมวตก)
-    // Arrays สำหรับเก็บองค์ประกอบด่าน
+
     private Rectangle[] platforms; // แพลตฟอร์ม
     private Rectangle finishLine; // เส้นชัย (หนูสีส้มแดง)
     private Rectangle[] collectibles; // วัตถุที่ต้องเก็บ (Cheese) - จะถูกตั้งค่าเป็น null เมื่อถูกเก็บ
     private Rectangle[] collectibleOriginalPositions; // ตำแหน่งดั้งเดิมของ Cheese (สำหรับ respawn)
-    private int score = 0; // คะแนน
-    private int collectiblesCount = 0; // นับจำนวน Cheese ที่เก็บได้
+    private int score = 0;
+    private int collectiblesCount = 0;
     // ตัวแปรสำหรับจับเวลา
     private final int GAME_DURATION_SECONDS = 60; // เวลาทั้งหมด 60 วินาที
-    private int remainingTime; // เวลาที่เหลือ (วินาที)
+    private int remainingTime; // เวลาที่เหลือ 
     private int tickCounter; // ตัวนับ tick (20ms) เพื่อใช้คำนวณวินาที
     private final int TICKS_PER_SECOND = 50; // 50 ticks (ครั้ง) ต่อ 1 วินาที (1000ms / 20ms = 50)
 
     // เมธอดนี้จะทำงานเมื่อ Game panel ถูกสร้างขึ้น
     public Game() {
-        timer = new Timer(20, this); // สร้าง Timer ให้ทำงานทุก 20ms และเรียก actionPerformed(this)
-        timer.start(); // เริ่มการทำงานของ Timer
-        setFocusable(true); // ทำให้ Panel นี้สามารถรับ focus (เพื่อรับ KeyListener)
-        setPreferredSize(new Dimension(800, 600)); // กำหนดขนาดที่ต้องการของ Panel
-        addKeyListener(this); // เพิ่ม KeyListener ให้กับ Panel นี้
+        timer = new Timer(20, this);
+        timer.start();
+        setFocusable(true);
+        setPreferredSize(new Dimension(800, 600));
+        addKeyListener(this);
         specialEnemiesList = new ArrayList<>(); // สร้าง List ว่างสำหรับศัตรูพิเศษ
         enemiesList = new ArrayList<>(); // สร้าง List ว่างสำหรับศัตรูปกติ
-        // โหลดรูปภาพจากไฟล์ใน resources
         characterImage = new ImageIcon(getClass().getResource("Rat.png")).getImage();
         enemyImage = new ImageIcon(getClass().getResource("cat.png")).getImage();
         collectibleImage = new ImageIcon(getClass().getResource("cheese.png")).getImage();
         finishLineImage = new ImageIcon(getClass().getResource("Rat1-1.png.png")).getImage();
         heartImage = new ImageIcon(getClass().getResource("heart.png")).getImage();
         specialEnemyImage = new ImageIcon(getClass().getResource("SpecialCat.png")).getImage();
-        setDifficulty(1); // กำหนดให้เริ่มเกมที่ Level 1 เป็นค่าเริ่มต้น
+        setDifficulty(1);
     }
 
-    // --- เมธอดตั้งค่าระดับความยาก ---
-    // เมธอดนี้ทำหน้าที่เป็นตัวกลาง เรียกเมธอด setLevel...() ที่ถูกต้องตาม difficulty ที่ได้รับ
     public void setDifficulty(int difficulty) {
         switch (difficulty) {
             case 1:
@@ -92,10 +85,9 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    // --- เมธอดตั้งค่าด่าน Level 1 ---
     public void setLevel1Difficulty() {
-        lives = 3; // ให้ 3 ชีวิต
-        backgroundImage = new ImageIcon(getClass().getResource("level1.png")).getImage(); // โหลดพื้นหลัง Level 1
+        lives = 3;
+        backgroundImage = new ImageIcon(getClass().getResource("level1.png")).getImage();
         // สร้างแพลตฟอร์ม 2 อัน
         platforms = new Rectangle[2];
         platforms[0] = new Rectangle(300, 350, 400, 20); // แพลตฟอร์มชั้นล่าง
@@ -121,9 +113,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         repaint(); // สั่งวาดหน้าจอใหม่
     }
 
-    // --- เมธอดตั้งค่าด่าน Level 2 ---
     public void setLevel2Difficulty() {
-        lives = 4; // ให้ 4 ชีวิต
+        lives = 4;
         backgroundImage = new ImageIcon(getClass().getResource("level2.png")).getImage();
         platforms = new Rectangle[3];
         platforms[0] = new Rectangle(400, 350, 300, 20);
@@ -149,9 +140,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-    // --- เมธอดตั้งค่าด่าน Level 3 ---
     public void setLevel3Difficulty() {
-        lives = 5; // ให้ 5 ชีวิต
+        lives = 5;
         backgroundImage = new ImageIcon(getClass().getResource("level3.png")).getImage();
         platforms = new Rectangle[4];
         platforms[0] = new Rectangle(100, 350, 300, 20);
@@ -180,7 +170,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-    // --- เมธอดตั้งค่าด่าน Level 4 ---
     public void setLevel4Difficulty() {
         lives = 5;
         backgroundImage = new ImageIcon(getClass().getResource("level4.png")).getImage();
@@ -216,7 +205,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-    // --- เมธอดตั้งค่าด่าน Level 5 ---
     public void setLevel5Difficulty() {
         lives = 5;
         backgroundImage = new ImageIcon(getClass().getResource("level5.png")).getImage();
@@ -256,17 +244,14 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-    // --- เมธอดกระโดด ---
     public void jump() {
         // ถ้ายังไม่ได้กระโดดอยู่ (ป้องกันการกระโดดซ้อน)
         if (!isJumping) {
-            isJumping = true; // ตั้งสถานะเป็นกำลังกระโดด
-            velocityY = -15; // ให้ความเร็วในแนวดิ่งเป็นลบ (พุ่งขึ้น)
+            isJumping = true;
+            velocityY = -15;
         }
     }
 
-    // --- เมธอด Game Loop ( actionPerformed ) ---
-    // เมธอดนี้จะถูกเรียกโดย Timer ทุกๆ 20ms
     @Override
     public void actionPerformed(ActionEvent e) {
         // ตรวจสอบว่าเกมยังไม่จบ (ไม่แพ้ และ ไม่ชนะ)
@@ -274,9 +259,9 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
             // --- Logic การจับเวลา ---
             tickCounter++; // นับ tick
-            if (tickCounter >= TICKS_PER_SECOND) { // ถ้าครบ 50 ticks (1 วินาที)
-                remainingTime--; // ลดเวลาที่เหลือ 1 วินาที
-                tickCounter = 0; // รีเซ็ตตัวนับ tick
+            if (tickCounter >= TICKS_PER_SECOND) {
+                remainingTime--;
+                tickCounter = 0;
             }
 
             // ตรวจสอบว่าเวลาหมดหรือไม่
@@ -290,7 +275,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 return; // หยุดการทำงานของ actionPerformed ในรอบนี้
             }
 
-            // --- Logic ฟิสิกส์ (การเคลื่อนที่) ---
             // ถ้ากำลังกระโดด หรือ ไม่ได้อยู่บนพื้น (กำลังตก)
             if (isJumping || !isOnPlatform) {
                 characterY += velocityY; // อัปเดตตำแหน่ง Y ตามความเร็ว
@@ -302,10 +286,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             for (Rectangle platform : platforms) {
                 // สร้าง Hitbox (สี่เหลี่ยมเล็กๆ) ใต้เท้าตัวละครเพื่อตรวจสอบการชน
                 if (new Rectangle(characterX, characterY + 80, 50, 1).intersects(platform)) {
-                    characterY = platform.y - 80; // ย้ายตัวละครมายืนบนแพลตฟอร์ม
-                    isJumping = false; // หยุดสถานะกระโดด
-                    isOnPlatform = true; // ตั้งสถานะว่าอยู่บนแพลตฟอร์ม
-                    velocityY = 0; // หยุดความเร็วในแนวดิ่ง
+                    characterY = platform.y - 80;
+                    isJumping = false;
+                    isOnPlatform = true;
+                    velocityY = 0;
                 }
             }
 
@@ -326,13 +310,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 characterX = getWidth() - 50; // กันทะลุขวา
             }
 
-            // --- Logic ศัตรู (AI) ---
             // อัปเดต AI ของแมวทุกตัวใน list
             for (Enemy cat : enemiesList) {
                 cat.update(this); // ส่ง 'this' (Game object) เพื่อให้แมวรู้ตำแหน่ง Cheese
             }
 
-            // --- Logic การชน (Collision) ---
             // ตรวจสอบการชนกับศัตรูปกติ (แมว AI)
             // (วนลูปแบบถอยหลัง เพื่อป้องกันปัญหาขณะลบ item ออกจาก List)
             for (int i = enemiesList.size() - 1; i >= 0; i--) {
@@ -426,10 +408,9 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 hasWon = true; // ชนะแล้ว!
             }
         }
-        repaint(); // สั่งวาดหน้าจอใหม่ (อัปเดตภาพ)
+        repaint();
     }
 
-    // --- เมธอดวาดหน้าจอ (paintComponent) ---
     // เมธอดนี้จะถูกเรียกโดย repaint() หรือเมื่อระบบต้องการวาดหน้าจอใหม่
     @Override
     public void paintComponent(Graphics g) {
@@ -512,13 +493,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    // --- เมธอด Getter ---
     // เมธอดสำหรับให้คลาสอื่น (เช่น Enemy) ดึงข้อมูล Cheese
     public Rectangle[] getCollectibles() {
         return collectibles;
     }
 
-    // --- เมธอด Respawn Cheese ---
     // เมธอดสำหรับทำให้ Cheese กลับมาเกิดใหม่ทั้งหมด (เมื่อโดนแมวชน)
     public void respawnAllCollectibles() {
         // 1. รีเซ็ตคะแนนและจำนวนนับ
@@ -542,13 +521,11 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         return score;
     }
 
-    // --- เมธอด KeyListener (ไม่ใช้งาน) ---
     @Override
     public void keyTyped(KeyEvent e) {
         // ไม่ใช้งาน
     }
 
-    // --- เมธอด KeyListener (เมื่อปุ่มถูกกด) ---
     @Override
     public void keyPressed(KeyEvent e) {
         // เงื่อนไขสำหรับการกดปุ่มเมื่อเกมยังไม่จบ
@@ -578,7 +555,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    // --- เมธอด KeyListener (เมื่อปุ่มถูกปล่อย) ---
     @Override
     public void keyReleased(KeyEvent e) {
         if (!gameOver && !hasWon) {
@@ -593,7 +569,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    // --- เมธอดเริ่มเกมใหม่ ---
     // เมธอดสำหรับรีเซ็ตค่าทั้งหมดเพื่อเริ่มเล่นด่านเดิมใหม่
     public void restartGame() {
         // Reset ค่าเริ่มต้นของศัตรู, แพลตฟอร์ม, และหัวใจตามระดับความยาก
